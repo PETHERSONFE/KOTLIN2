@@ -1,0 +1,80 @@
+MainActivity.kt
+
+
+package com.example.conversormoeda
+
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val editTextValor = findViewById<EditText>(R.id.editTextValor)
+        val editTextTaxaConversao = findViewById<EditText>(R.id.editTextTaxaConversao)
+        val buttonConverter = findViewById<Button>(R.id.buttonConverter)
+        val textViewResultado = findViewById<TextView>(R.id.textViewResultado)
+
+        buttonConverter.setOnClickListener {
+            val valorStr = editTextValor.text.toString()
+            val taxaConversaoStr = editTextTaxaConversao.text.toString()
+
+            if (valorStr.isNotEmpty() && taxaConversaoStr.isNotEmpty()) {
+                val valor = valorStr.toDouble()
+                val taxaConversao = taxaConversaoStr.toDouble()
+                val valorConvertido = valor * taxaConversao
+
+                textViewResultado.text = "Valor convertido: $valorConvertido"
+            } else {
+                textViewResultado.text = "Por favor, insira o valor e a taxa de conversão."
+            }
+        }
+    }
+}
+
+
+activity_main.xml
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/editTextValor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Digite o valor a ser convertido"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/editTextTaxaConversao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Digite a taxa de conversão"
+        android:inputType="numberDecimal"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/buttonConverter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Converter"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/textViewResultado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="18sp"
+        android:paddingTop="16dp" />
+
+</LinearLayout>
