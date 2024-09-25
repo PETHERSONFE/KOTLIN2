@@ -1,7 +1,6 @@
 activity_main
 
-
-package com.example.conversormoeda
+package com.example.calculadoragorjeta
 
 import android.os.Bundle
 import android.widget.Button
@@ -10,71 +9,69 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val editTextValor = findViewById<EditText>(R.id.editTextValor)
-        val editTextTaxaConversao = findViewById<EditText>(R.id.editTextTaxaConversao)
-        val buttonConverter = findViewById<Button>(R.id.buttonConverter)
-        val textViewResultado = findViewById<TextView>(R.id.textViewResultado)
+        val editTextBillAmount = findViewById<EditText>(R.id.editTextBillAmount)
+        val editTextTipPercentage = findViewById<EditText>(R.id.editTextTipPercentage)
+        val buttonCalculateTip = findViewById<Button>(R.id.buttonCalculateTip)
+        val textViewResult = findViewById<TextView>(R.id.textViewResult)
 
-        buttonConverter.setOnClickListener {
-            val valorStr = editTextValor.text.toString()
-            val taxaConversaoStr = editTextTaxaConversao.text.toString()
+        buttonCalculateTip.setOnClickListener {
+            val billAmount = editTextBillAmount.text.toString().toFloatOrNull()
+            val tipPercentage = editTextTipPercentage.text.toString().toFloatOrNull()
 
-            if (valorStr.isNotEmpty() && taxaConversaoStr.isNotEmpty()) {
-                val valor = valorStr.toDouble()
-                val taxaConversao = taxaConversaoStr.toDouble()
-                val valorConvertido = valor * taxaConversao
+            if (billAmount != null && tipPercentage != null) {
+                val tip = billAmount * (tipPercentage / 100)
+                val total = billAmount + tip
 
-                textViewResultado.text = "Valor convertido: $valorConvertido"
+                textViewResult.text = "Gorjeta: R$ %.2f\nTotal: R$ %.2f".format(tip, total)
             } else {
-                textViewResultado.text = "Por favor, insira o valor e a taxa de conversão."
+                textViewResult.text = "Por favor, insira valores válidos."
             }
         }
     }
 }
 
-
 activity_main.xml
 
 
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
     <EditText
-        android:id="@+id/editTextValor"
+        android:id="@+id/editTextBillAmount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Digite o valor a ser convertido"
+        android:hint="Valor da conta"
         android:inputType="numberDecimal" />
 
     <EditText
-        android:id="@+id/editTextTaxaConversao"
+        android:id="@+id/editTextTipPercentage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Digite a taxa de conversão"
-        android:inputType="numberDecimal"
-        android:layout_marginTop="8dp"/>
+        android:hint="Porcentagem da gorjeta"
+        android:inputType="numberDecimal" />
 
     <Button
-        android:id="@+id/buttonConverter"
-        android:layout_width="match_parent"
+        android:id="@+id/buttonCalculateTip"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Converter"
-        android:layout_marginTop="8dp"/>
+        android:text="Calcular Gorjeta" />
 
     <TextView
-        android:id="@+id/textViewResultado"
-        android:layout_width="match_parent"
+        android:id="@+id/textViewResult"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="Resultado"
         android:textSize="18sp"
-        android:paddingTop="16dp" />
+        android:layout_marginTop="16dp" />
 
 </LinearLayout>
